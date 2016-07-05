@@ -25,7 +25,7 @@ public class MessageSender {
         MessageCreator messageCreator = new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
-                return session.createTextMessage("ping! --> " + textMessage);
+                return session.createTextMessage(textMessage);
             }
         };
         jmsTemplate.send(messageCreator);

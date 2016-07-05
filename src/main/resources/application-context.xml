@@ -29,7 +29,7 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!--  Default Destination Queue Definition-->
     <bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
-        <constructor-arg index="0" value="test"/>
+        <constructor-arg index="0" value="calc_response"/>
     </bean>
 
     <!-- JmsTemplate Definition -->
@@ -42,5 +42,18 @@ http://www.springframework.org/schema/tx/spring-tx.xsd">
     <bean id="messageSender" class="com.madebykamil.jms.MessageSender">
         <constructor-arg index="0" ref="jmsTemplate" />
     </bean>
+
+    <!-- Message Receiver Definition -->
+    <bean id="messageReceiver" class="com.madebykamil.jms.MessageConsumer">
+        <property name="messageSender" ref="messageSender"/>
+    </bean>
+
+    <bean class="org.springframework.jms.listener.SimpleMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destinationName" value="calc_request" />
+        <property name="messageListener" ref="messageReceiver" />
+    </bean>
+
+
 
 </beans>
